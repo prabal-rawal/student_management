@@ -28,11 +28,11 @@ int main(int argc, char* argv[]) {
    }
 
    /* Create SQL statement */
-   sql = "CREATE TABLE STUDENTS("  \
+      sql = "CREATE TABLE STUDENTS("  \
       "ID INT PRIMARY KEY     NOT NULL," \
-      "FIRST_NAME    TEXT     NOT NULL," \
-      "LAST_NAME     TEXT     NOT NULL," \
-      "AGE            INT     NOT NULL)";
+      "FIRST_NAME     TEXT    NOT NULL," \
+      "LAST_NAME      TEXT     NOT NULL," \
+      "AGE            INT);";
 
    /* Execute SQL statement */
    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
