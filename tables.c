@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <sqlite3.h> 
 
-//fix SQL error: NOT NULL constraint failed: STUDENTS.ID (SQLITE_CONSTRAINT_NOTNULL)
 
 
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
@@ -14,7 +13,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-int main(int argc, char* argv[]) {
+int create(int argc, char* argv[]) {
    sqlite3 *db;
    char *zErrMsg = 0;
    int rc;
@@ -35,7 +34,8 @@ int main(int argc, char* argv[]) {
       "ID INT PRIMARY KEY," \
       "FIRST_NAME     TEXT," \
       "LAST_NAME      TEXT," \
-      "AGE            INT);";
+      "AGE            INT,"\
+      "GENDER         TEXT);";
 
    /* Execute SQL statement */
    rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
@@ -50,15 +50,8 @@ int main(int argc, char* argv[]) {
    return 0;
 }
 
+int main(int argc, char *argv[]) {
+   create(argc, argv);
+   return 0;
+}
 
-/*
-CREATE TABLE STUDENTS(
-   ID INT PRIMARY KEY NOT NULL,
-   NAME TEXT NOT NULL,
-   AGE INT NOT NULL,
-   PHONE INT NOT NULL
-);
-
-INSERT INTO STUDENTS(ID, NAME, AGE, PHONE) VALUES(01, akka, 19, 99999999);
-
-*/

@@ -11,7 +11,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-int insert(int id, char *first_name, char *last_name, int age) {
+int insert(int id, char *first_name, char *last_name, int age, char *gender) {
    sqlite3 *db;
    char *zErrMsg = 0;
    int rc;
@@ -20,7 +20,7 @@ int insert(int id, char *first_name, char *last_name, int age) {
    rc = sqlite3_open("data/students.db", &db);
 
    /* Create SQL statement */
-   const char *sql = "INSERT INTO STUDENTS (ID, FIRST_NAME, LAST_NAME, AGE) VALUES (?, ?, ?, ?);";
+   const char *sql = "INSERT INTO STUDENTS (ID, FIRST_NAME, LAST_NAME, AGE, GENDER) VALUES (?, ?, ?, ?, ?);";
    const char *pzTail;
    sqlite3_stmt *stmt;
    sqlite3_prepare_v2(db, sql, 512, &stmt, &pzTail);
@@ -28,6 +28,8 @@ int insert(int id, char *first_name, char *last_name, int age) {
    sqlite3_bind_text(stmt, 2, first_name, -1, SQLITE_STATIC);
    sqlite3_bind_text(stmt, 3, last_name, -1, SQLITE_STATIC);
    sqlite3_bind_int(stmt, 4, age);
+   sqlite3_bind_text(stmt, 5, gender, -1, SQLITE_STATIC);
+
    while (sqlite3_step(stmt) != SQLITE_DONE) {}
    sqlite3_finalize(stmt);
 
@@ -45,7 +47,7 @@ int insert(int id, char *first_name, char *last_name, int age) {
 }
 
 int main(int argc, char *argv[]) {
-   insert(1, "Annie", "Sohal", 19);
+   insert(1, "Blah", "Blah", 19, "M");
    return 0;
 }
 
