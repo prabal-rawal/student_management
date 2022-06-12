@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <sqlite3.h> 
 
+//fix SQL error: NOT NULL constraint failed: STUDENTS.ID (SQLITE_CONSTRAINT_NOTNULL)
+
+
 static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
@@ -29,9 +32,9 @@ int main(int argc, char* argv[]) {
 
    /* Create SQL statement */
       sql = "CREATE TABLE STUDENTS("  \
-      "ID INT PRIMARY KEY     NOT NULL," \
-      "FIRST_NAME     TEXT    NOT NULL," \
-      "LAST_NAME      TEXT     NOT NULL," \
+      "ID INT PRIMARY KEY," \
+      "FIRST_NAME     TEXT," \
+      "LAST_NAME      TEXT," \
       "AGE            INT);";
 
    /* Execute SQL statement */

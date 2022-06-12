@@ -15,7 +15,6 @@ int insert(int id, char *first_name, char *last_name, int age) {
    sqlite3 *db;
    char *zErrMsg = 0;
    int rc;
-   int str[100];
 
    /* Open database */
    rc = sqlite3_open("data/students.db", &db);
@@ -46,7 +45,7 @@ int insert(int id, char *first_name, char *last_name, int age) {
 }
 
 int main(int argc, char *argv[]) {
-   insert(1, "HHH", "SIJJJJNGH", 19);
+   insert(1, "Annie", "Sohal", 19);
    return 0;
 }
 
