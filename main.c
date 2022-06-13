@@ -111,18 +111,18 @@ int student_profile(){
 	if(choice == 1){
 		insert_student();
 	}
-	else if(choice == 2){
-		delete_student();
-	}
-	else if(choice == 3){
-		view_student();
-	}
-	else if(choice == 4){
-		search_student();
-	}
-	else if(choice == 5){
-		start_menu();
-	}
+	// else if(choice == 2){
+	// 	delete_student();
+	// }
+	// else if(choice == 3){
+	// 	view_student();
+	// }
+	// else if(choice == 4){
+	// 	search_student();
+	// }
+	// else if(choice == 5){
+	// 	start_menu();
+	// }
 	else if(choice == 6){
 		return 0;
 	}
@@ -134,3 +134,7 @@ int student_profile(){
 	return 0;
 	}
 
+int main(){
+	start_menu();
+	return 0;
+}

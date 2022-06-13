@@ -12,7 +12,7 @@ static int callback0(void *NotUsed, int argc, char **argv, char **azColName) {
 }
 
 
-int create(int argc, char* argv[]) {
+int create() {
    sqlite3 *db;
    char *zErrMsg = 0;
    int rc;

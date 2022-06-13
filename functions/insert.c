@@ -1,47 +1,54 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <sqlite3.h>
+#include <stdio.h>
+#include <string.h>
 
-static int callback1(void *NotUsed, int argc, char **argv, char **azColName) {
-   int i;
-   for(i = 0; i<argc; i++) {
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-   }
-   printf("\n");
-   return 0;
+int main(void) {
+    
+    sqlite3 *db;
+    char *err_msg = 0;
+    
+    int rc = sqlite3_open("data/students.db", &db);
+    
+    if (rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        
+        return 1;
+    }
+    
+    char name[256], price[256];
+    printf("Enter car name: ");
+    scanf("%s", name);
+    printf("Enter car price: ");
+    scanf("%s", price);
+
+    int offset = 0;
+    //insert(id, first_name, last_name, age, gender);
+    char sql_insert[1024];
+    strcpy(sql_insert, (char *)"INSERT INTO STUDENTS VALUES(1, '");
+    offset += strlen("INSERT INTO STUDENTS VALUES(1, '");
+    strcpy(sql_insert + offset, name);
+    offset += strlen(name);
+    strcpy(sql_insert + offset, (char *)"', ");
+    offset += strlen("', ");
+    strcpy(sql_insert + offset, price);
+    offset += strlen(price);
+    strcpy(sql_insert + offset, ");"); 
+    
+    rc = sqlite3_exec(db, &sql_insert[0], 0, 0, &err_msg);
+    
+    sqlite3_close(db);
+
+    if (rc != SQLITE_OK ) {
+        
+        fprintf(stderr, "SQL error: %s\n", err_msg);
+        
+        sqlite3_free(err_msg);        
+        sqlite3_close(db);
+        
+        return 1;
+    }
+    
+    return 0;
 }
-
-
-void insert(int id, char *first_name, char *last_name, int age, char *gender) {
-   sqlite3 *db;
-   char *zErrMsg = 0;
-   int rc;
-
-   /* Open database */
-   rc = sqlite3_open("/Volumes/yet_another/Development/student_management /data/students.db", &db);
-
-   /* Create SQL statement */
-   const char *sql = "INSERT INTO STUDENTS (ID, FIRST_NAME, LAST_NAME, AGE, GENDER) VALUES (?, ?, ?, ?, ?);";
-   const char *pzTail;
-   sqlite3_stmt *stmt;
-   sqlite3_prepare_v2(db, sql, 512, &stmt, &pzTail);
-   sqlite3_bind_int(stmt, 1, id);
-   sqlite3_bind_text(stmt, 2, first_name, -1, SQLITE_STATIC);
-   sqlite3_bind_text(stmt, 3, last_name, -1, SQLITE_STATIC);
-   sqlite3_bind_int(stmt, 4, age);
-   sqlite3_bind_text(stmt, 5, gender, -1, SQLITE_STATIC);
-
-   while (sqlite3_step(stmt) != SQLITE_DONE) {}
-   sqlite3_finalize(stmt);
-
-
-   /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback1, 0, &zErrMsg);
-   if(rc != SQLITE_OK) {
-      fprintf(stdout, "Records created successfully\n");
-   } else {
-      fprintf(stdout, "Records created successfully\n");
-   }
-   sqlite3_close(db);
-}
-
