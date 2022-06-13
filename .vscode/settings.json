@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.java": "java",
+        "sqlite3.h": "c"
+    }
+}

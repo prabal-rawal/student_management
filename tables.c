@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <sqlite3.h> 
 
-
-
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+static int callback0(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
@@ -13,6 +11,7 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
+
 int create(int argc, char* argv[]) {
    sqlite3 *db;
    char *zErrMsg = 0;
@@ -20,7 +19,7 @@ int create(int argc, char* argv[]) {
    char *sql;
 
    /* Open database */
-   rc = sqlite3_open("data/students.db", &db);
+   rc = sqlite3_open("/Volumes/yet_another/Development/student_management /data/students.db", &db);
    
    if( rc ) {
       fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
@@ -31,14 +30,14 @@ int create(int argc, char* argv[]) {
 
    /* Create SQL statement */
       sql = "CREATE TABLE STUDENTS("  \
-      "ID INT PRIMARY KEY," \
-      "FIRST_NAME     TEXT," \
+      "ID INT PRIMARY KEY     NOT NULL," \
+      "FIRST_NAME     TEXT    NOT NULL," \
       "LAST_NAME      TEXT," \
-      "AGE            INT,"\
-      "GENDER         TEXT);";
+      "AGE            INT     NOT NULL,"\
+      "GENDER         TEXT    NOT NULL);";
 
    /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+   rc = sqlite3_exec(db, sql, callback0, 0, &zErrMsg);
    
    if( rc != SQLITE_OK ){
       fprintf(stderr, "SQL error: %s\n", zErrMsg);
@@ -50,8 +49,7 @@ int create(int argc, char* argv[]) {
    return 0;
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]){
    create(argc, argv);
    return 0;
 }
-

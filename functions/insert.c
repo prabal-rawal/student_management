@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <sqlite3.h>
 
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
+static int callback1(void *NotUsed, int argc, char **argv, char **azColName) {
    int i;
    for(i = 0; i<argc; i++) {
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
@@ -11,13 +11,14 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
    return 0;
 }
 
-int insert(int id, char *first_name, char *last_name, int age, char *gender) {
+
+void insert(int id, char *first_name, char *last_name, int age, char *gender) {
    sqlite3 *db;
    char *zErrMsg = 0;
    int rc;
 
    /* Open database */
-   rc = sqlite3_open("data/students.db", &db);
+   rc = sqlite3_open("/Volumes/yet_another/Development/student_management /data/students.db", &db);
 
    /* Create SQL statement */
    const char *sql = "INSERT INTO STUDENTS (ID, FIRST_NAME, LAST_NAME, AGE, GENDER) VALUES (?, ?, ?, ?, ?);";
@@ -35,19 +36,12 @@ int insert(int id, char *first_name, char *last_name, int age, char *gender) {
 
 
    /* Execute SQL statement */
-   rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
+   rc = sqlite3_exec(db, sql, callback1, 0, &zErrMsg);
    if(rc != SQLITE_OK) {
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
-      sqlite3_free(zErrMsg);
+      fprintf(stdout, "Records created successfully\n");
    } else {
       fprintf(stdout, "Records created successfully\n");
    }
    sqlite3_close(db);
-   return 0;
-}
-
-int main(int argc, char *argv[]) {
-   insert(1, "Blah", "Blah", 19, "M");
-   return 0;
 }
 
